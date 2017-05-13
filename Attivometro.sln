@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleDriveDataLayer", "Goo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttivometroDataManager", "AttivometroDataManager\AttivometroDataManager.csproj", "{EB004938-C342-4D4E-AAA5-06AEB661A916}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esporta", "Esporta\Esporta.csproj", "{426F860C-BBE3-4B73-8A4D-4D11FF1AC917}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{EB004938-C342-4D4E-AAA5-06AEB661A916}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB004938-C342-4D4E-AAA5-06AEB661A916}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB004938-C342-4D4E-AAA5-06AEB661A916}.Release|Any CPU.Build.0 = Release|Any CPU
+		{426F860C-BBE3-4B73-8A4D-4D11FF1AC917}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{426F860C-BBE3-4B73-8A4D-4D11FF1AC917}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{426F860C-BBE3-4B73-8A4D-4D11FF1AC917}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{426F860C-BBE3-4B73-8A4D-4D11FF1AC917}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

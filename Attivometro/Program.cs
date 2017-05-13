@@ -12,8 +12,7 @@ namespace Attivometro
         static void Main(string[] args)
         {
             Application.Run(new Attivometro());
-            //Attivometro a = new Attivometro();
-            //a.Show();
+
         }
     }
 }

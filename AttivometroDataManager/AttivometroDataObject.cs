@@ -17,8 +17,8 @@ namespace AttivometroDataManager
         static List<string> _listafogli;
         static List<string> _listanomi;
         static List<Attivista> _listaatiivisti;
-        static String SpreadsheetId = "1ubhVmTLRBb6jXC98TL0Z8_GiNUk-9_CRwSS0TEXZ6mM"; //"1N5821LYxWpyycBuvsMf5OM5gKdE0be96VJ_mKlU1WzA";
-        
+        static String SpreadsheetId = "1xXkwdm7AH0xbr5ilK86aK5vMbVCkNnwGzcFjwDveysY"; //"1ubhVmTLRBb6jXC98TL0Z8_GiNUk-9_CRwSS0TEXZ6mM"; //"1N5821LYxWpyycBuvsMf5OM5gKdE0be96VJ_mKlU1WzA";
+
         private List<string> GetListaFogli()
         {
             List<string> l = new List<string>();
@@ -36,21 +36,22 @@ namespace AttivometroDataManager
 
             foreach (string s in _listafogli)
             {
+                Console.WriteLine("Acquisisco Nomi da {0}",s);
                 if (s=="Assemblea")
                 {
-                    l.AddRange(_g.GetRange(SpreadsheetId, s, "A5:A2000"));
+                    l.AddRange(_g.GetRange( s, "A5:A2000"));
                 }
                 else if (s == "Sociale")
                 {
-                    l.AddRange(_g.GetRange(SpreadsheetId, s, "B3:B2000"));
+                    l.AddRange(_g.GetRange( s, "B3:B2000"));
                 }
 
                 else if (s == "Ambiente" || s == "Riepilogo - NON TOCCARE")
                 {
-                    l.AddRange(_g.GetRange(SpreadsheetId, s, "A4:A2000"));
+                    l.AddRange(_g.GetRange(s, "A4:A2000"));
                 }
                 else {
-                    l.AddRange(_g.GetRange(SpreadsheetId, s, "A3:A2000"));
+                    l.AddRange(_g.GetRange(s, "A3:A2000"));
                 }
             }
 
@@ -81,7 +82,7 @@ namespace AttivometroDataManager
             int _nome_j = 0;
 
             //vr = _g.GetValueRange(SpreadsheetId, foglio, "A1:ZZ9999");
-            vr = _g.GetFoglio(SpreadsheetId, foglio);
+            vr = _g.GetFoglio( foglio);
 
             for (int i = 0; i < vr.Values.Count; i++)
             {
@@ -115,9 +116,16 @@ namespace AttivometroDataManager
         private List<Attivista> GetAttivisti()
         {
             List<Attivista> l = new List<Attivista>();
-
-            foreach(string nome in _listanomi)
+            int i = 0;
+            int j = 0;
+            foreach (string nome in _listanomi)
             {
+                i++;
+                j++;
+                if (j>20) { 
+                    Console.WriteLine("Build Attivometro {0}% completata...", (100*i / (double)_listanomi.Count).ToString("#0.00"));
+                    j = 0;
+                }
                 Attivista a = new Attivista();
                 a.Nome = nome;
                 foreach(string foglio in _listafogli) {
@@ -150,6 +158,32 @@ namespace AttivometroDataManager
             get { return _listaatiivisti; }
         }
 
+        public List<NumeroAttivitaAttivista> ElencoAttiviQuotaFissa(DateTime DataCalcolo, int SogliaAttivita, int MesiIntervallo)
+        {
+            List<NumeroAttivitaAttivista> l = new List<NumeroAttivitaAttivista>();
+            foreach (Attivista a in this.ListaAttiviQuotaFissa(DataCalcolo, SogliaAttivita, MesiIntervallo))
+            {
+                NumeroAttivitaAttivista n = new NumeroAttivitaAttivista();
+                n.Nome = a.Nome;
+                n.NumeroAttivita = a.ContaAttivita(DataCalcolo.AddMonths(-4), DataCalcolo);
+                l.Add(n);
+            }
+            return l;
+        }
+
+        public List<NumeroAttivitaAttivista> ElencoPrimaDelRicalcol(DateTime DataAttuale, int SogliaAttivita, DateTime DataUltimoCalcolo)
+        {
+            List<NumeroAttivitaAttivista> l = new List<NumeroAttivitaAttivista>();
+            //foreach (Attivista a in this.ListaAttiviQuotaFissa(DataCalcolo, SogliaAttivita, MesiIntervallo))
+            //{
+                //NumeroAttivitaAttivista n = new NumeroAttivitaAttivista();
+                //n.Nome = a.Nome;
+                //n.NumeroAttivita = a.ContaAttivita(DataCalcolo.AddMonths(-4), DataCalcolo);
+                //l.Add(n);
+            //}
+            return l;
+        }
+
         public List<Attivista> ListaAttiviQuotaFissa(DateTime DataCalcolo, int SogliaAttivita, int MesiIntervallo)
         {
             List<Attivista> la = new List<Attivista>();
@@ -166,12 +200,27 @@ namespace AttivometroDataManager
         
         public AttivometroDataObject()
         {
+            Console.WriteLine("Starting Attivometro...");
             _g = new GoogleSheets(SpreadsheetId);
-            _s = _g.FullSheet;
-            _listafogli = GetListaFogli();
-            _listanomi = GetListaNomi();
-            _listaatiivisti = GetAttivisti();
-            ListaAttiviQuotaFissa(DateTime.Now, 8, 4);
+            if (_g.Logged) { 
+                _s = _g.FullSheet;
+
+                Console.WriteLine("Loading Attività...");
+                _listafogli = GetListaFogli();
+
+                Console.WriteLine("Loading Attivisti...");
+                _listanomi = GetListaNomi();
+
+                Console.WriteLine("Loading Attivometro...");
+                _listaatiivisti = GetAttivisti();
+
+                Console.WriteLine("Attivometro Pronto!");
+            }
+            else
+            {
+                Console.Write("Non è stato possibile leggere i dati.");
+                Console.ReadKey();
+            }
         }
 
     }

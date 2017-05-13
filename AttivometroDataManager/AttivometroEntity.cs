@@ -32,6 +32,20 @@ namespace AttivometroDataManager
             return r;
         }
 
+        public List<Attivita> ListaAttivita
+        {
+            get { return _listaattivita; }
+            
+        }
+
+        public int TotaleAttivita
+        {
+            get { return _listaattivita.Count(); }
+            
+        }
+
+
+
         public int ContaAttivita(DateTime DataStart, DateTime DataEnd)
         {
             int r = 0;
@@ -66,6 +80,25 @@ namespace AttivometroDataManager
         {
             _nome = nome;
             _data = data;
+        }
+
+    }
+
+    public class NumeroAttivitaAttivista
+    {
+        private string _nome;
+        private int _numeroattivita;
+
+        public string Nome
+        {
+            get { return _nome; }
+            set { _nome = value;  }
+        }
+
+        public int NumeroAttivita
+        {
+            get { return _numeroattivita; }
+            set { _numeroattivita = value; }
         }
 
     }
