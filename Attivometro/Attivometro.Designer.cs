@@ -32,7 +32,7 @@
             this.dateUltimaDataCalcoloAttivi = new System.Windows.Forms.DateTimePicker();
             this.labelUltimaDataCalcoloAttivi = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dateDataAttuale = new System.Windows.Forms.DateTimePicker();
             this.dataRisultatoCalcolo = new System.Windows.Forms.DataGridView();
             this.Nome = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Attivita = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -86,12 +86,12 @@
             this.label1.TabIndex = 4;
             this.label1.Text = "Lista Attivi alla Data:";
             // 
-            // dateTimePicker1
+            // dateDataAttuale
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(313, 40);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 22);
-            this.dateTimePicker1.TabIndex = 3;
+            this.dateDataAttuale.Location = new System.Drawing.Point(313, 40);
+            this.dateDataAttuale.Name = "dateDataAttuale";
+            this.dateDataAttuale.Size = new System.Drawing.Size(200, 22);
+            this.dateDataAttuale.TabIndex = 3;
             // 
             // dataRisultatoCalcolo
             // 
@@ -228,7 +228,7 @@
             this.Controls.Add(this.dataAttiviAllaData);
             this.Controls.Add(this.dataRisultatoCalcolo);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.dateTimePicker1);
+            this.Controls.Add(this.dateDataAttuale);
             this.Controls.Add(this.labelUltimaDataCalcoloAttivi);
             this.Controls.Add(this.dateUltimaDataCalcoloAttivi);
             this.Controls.Add(this.buttonCalcolaAttivi);
@@ -248,7 +248,7 @@
         private System.Windows.Forms.DateTimePicker dateUltimaDataCalcoloAttivi;
         private System.Windows.Forms.Label labelUltimaDataCalcoloAttivi;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker dateDataAttuale;
         private System.Windows.Forms.DataGridView dataRisultatoCalcolo;
         private System.Windows.Forms.DataGridViewTextBoxColumn Nome;
         private System.Windows.Forms.DataGridViewTextBoxColumn Attivita;

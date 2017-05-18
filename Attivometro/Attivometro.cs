@@ -9,12 +9,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AttivometroDataManager;
 using Esporta;
+using System.Collections;
 
 namespace Attivometro
 {
-
-
-
     public partial class Attivometro : Form
     {
         private AttivometroDataObject data;
@@ -26,14 +24,12 @@ namespace Attivometro
             this.Show();
         }
 
-
-
         private void buttonCalcolaAttivi_Click(object sender, EventArgs e)
         {
             List<Attivista> l = new List<Attivista>();
             l=data.ListaAttiviQuotaFissa(this.dateUltimaDataCalcoloAttivi.Value, 8, 4);
             List<Attivista> l_temp = new List<Attivista>();
-            l_temp = data.ListaAttiviPrimaDelRicalcolo(this.dateTimePicker1.Value, 8, this.dateUltimaDataCalcoloAttivi.Value);
+            l_temp = data.ListaAttiviPrimaDelRicalcolo(this.dateDataAttuale.Value, 8, this.dateUltimaDataCalcoloAttivi.Value);
 
             this.dataRisultatoCalcolo.Rows.Clear();
             this.dataAttiviAllaData.Rows.Clear();
@@ -48,13 +44,13 @@ namespace Attivometro
             {
                 DataGridViewRow r = dataAttiviAllaData.Rows[dataAttiviAllaData.Rows.Add()];
                 r.Cells["NomeAllaData"].Value = a.Nome;
-                r.Cells["AttivitaAllaData"].Value = a.ContaAttivita(this.dateUltimaDataCalcoloAttivi.Value, this.dateTimePicker1.Value);
+                r.Cells["AttivitaAllaData"].Value = a.ContaAttivita(this.dateUltimaDataCalcoloAttivi.Value, this.dateDataAttuale.Value);
             }
             foreach (Attivista a in data.ListaAttivisti.FindAll(x => (!l.Contains(x)) && (!l_temp.Contains(x))))
             {
                 DataGridViewRow r = dataMenoDiOtto.Rows[dataMenoDiOtto.Rows.Add()];
                 r.Cells["NomeMenoDiOtto"].Value = a.Nome;
-                r.Cells["AttivitaMenoDiOtto"].Value = a.ContaAttivita(this.dateUltimaDataCalcoloAttivi.Value, this.dateTimePicker1.Value);
+                r.Cells["AttivitaMenoDiOtto"].Value = a.ContaAttivita(this.dateUltimaDataCalcoloAttivi.Value, this.dateDataAttuale.Value);
             }
 
         }
@@ -66,20 +62,28 @@ namespace Attivometro
 
         private void buttonEsporta_Click(object sender, EventArgs e)
         {
-            EsportaInExcel exp = new EsportaInExcel();
-
-            List<object> lo = new List<object>();
-
+            
+            Hashtable ldata = new Hashtable();
             List<NumeroAttivitaAttivista> l = new List<NumeroAttivitaAttivista>();
-            l = data.ElencoAttiviQuotaFissa(this.dateUltimaDataCalcoloAttivi.Value, 8, 4);
+            List<NumeroAttivitaAttivista> lx = new List<NumeroAttivitaAttivista>();
+            List<NumeroAttivitaAttivista> lna = new List<NumeroAttivitaAttivista>();
 
-            foreach (NumeroAttivitaAttivista a in l)
-            {
-                lo.Add(new { Nome = a.Nome, Attivita = a.NumeroAttivita });
-            }
+            l = data.ElencoAttiviQuotaFissa(this.dateUltimaDataCalcoloAttivi.Value, 8, 4);
+            lx = data.ElencoPrimaDelRicalcolo(this.dateDataAttuale.Value, 8, this.dateUltimaDataCalcoloAttivi.Value);
+            lna = data.ElencoNonAttivi(this.dateDataAttuale.Value, 8, 4, this.dateUltimaDataCalcoloAttivi.Value);
+            
+            
+            ldata.Add("Operativi al " + dateUltimaDataCalcoloAttivi.Value.ToString("dd MM yyyy"), l);
+            ldata.Add("Operativi tra " + dateUltimaDataCalcoloAttivi.Value.ToString("dd MM") + " e " + dateDataAttuale.Value.ToString("dd MM"), lx);
+            ldata.Add("Non Operativi al " + dateDataAttuale.Value.ToString("dd MM"), lna);
+
+            EsportaInExcel exp2 = new EsportaInExcel();
+            exp2.SaveObjectListAsExcel<NumeroAttivitaAttivista>(ldata);
+            
+            exp2 = null;
             
 
-            exp.SaveObjectAsExcel<NumeroAttivitaAttivista>(l, @"c:\temp\attivometro.xlsx");
         }
+
     }
 }

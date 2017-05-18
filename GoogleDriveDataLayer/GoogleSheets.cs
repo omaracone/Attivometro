@@ -49,7 +49,6 @@ namespace GoogleDriveDataLayer
         private string ApplicationName = "Attivometro";
         private List<CacheFoglio> _CacheFogli = new List<CacheFoglio>();
 
-
         public GoogleSheets(string SpreadsheetId)
         {
             _spreadsheetid = SpreadsheetId;
